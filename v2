@@ -1,0 +1,1200 @@
+#include <stdio.h>
+#include <iostream>
+//@#include <LiquidCrystal.h>
+#define STEPPER_PIN_1 9
+#define STEPPER_PIN_2 10
+#define STEPPER_PIN_3 11
+#define STEPPER_PIN_4 12
+int button1 = 14;
+int button2 = 13;
+short jos = 2;
+short fataa = 3;
+short dreapta = 4;
+short spate = 5;
+short  stanga = 6;
+short sus = 7;
+short step_number = 0;
+short cub[7][7][7];
+
+//@LiquidCrystal lcd(1, 15, 16, 17, 18, 19);
+
+//@void setup() {
+// Serial.begin(9600);
+//pinMode(button1, INPUT_PULLUP);
+//pinMode(button2, INPUT_PULLUP);
+//pinMode(STEPPER_PIN_1, OUTPUT);
+//pinMode(STEPPER_PIN_2, OUTPUT);
+//pinMode(STEPPER_PIN_3, OUTPUT);
+//pinMode(STEPPER_PIN_4, OUTPUT);
+//pinMode(stanga, OUTPUT);
+//pinMode(dreapta, OUTPUT);
+//pinMode(jos, OUTPUT);
+//pinMode(sus, OUTPUT);
+//pinMode(fataa, OUTPUT);
+//pinMode(spate, OUTPUT);
+//lcd.begin(16, 2);
+//@}
+///////////////////////////////
+
+//void reglare(short fata_cub, float unghi){
+//
+//    short pasi = 0;
+//    digitalWrite(fata_cub, LOW);
+//    delay(10);
+//    while(pasi < 64*unghi){
+//        OneStep(false);
+//        pasi ++;
+//        delay(8);
+//    }
+//    pasi = 86*unghi;
+//    delay(100);
+//    digitalWrite(fata_cub,HIGH);
+//    delay(10);
+//}
+//void mutare_up(short fata_cub){
+//
+//    short pasi = 0;
+//    digitalWrite(fata_cub, LOW);
+//    delay(10);
+//    while(pasi < 64*8){
+//        OneStep(false);
+//        pasi ++;
+//        delay(8);
+//    }
+//    pasi = 86*8;
+//    delay(100);
+//    digitalWrite(fata_cub,HIGH);
+//    delay(10);
+//}
+//void mutare_down(short fata_cub){
+//
+//    short pasi = 0;
+//    digitalWrite(fata_cub, LOW);
+//    delay(10);
+//    while(pasi < 64*8){
+//        OneStep(true);
+//        pasi ++;
+//        delay(8);
+//    }
+//    pasi = 86*8;
+//    delay(100);
+//    digitalWrite(fata_cub,HIGH);
+//    delay(10);
+//}
+
+//void OneStep(bool dir){
+//    if(dir){
+//        switch(step_number){
+//            case 0:
+//                digitalWrite(STEPPER_PIN_1, HIGH);
+//                digitalWrite(STEPPER_PIN_2, LOW);
+//                digitalWrite(STEPPER_PIN_3, LOW);
+//                digitalWrite(STEPPER_PIN_4, LOW);
+//                break;
+//            case 1:
+//                digitalWrite(STEPPER_PIN_1, LOW);
+//                digitalWrite(STEPPER_PIN_2, HIGH);
+//                digitalWrite(STEPPER_PIN_3, LOW);
+//                digitalWrite(STEPPER_PIN_4, LOW);
+//                break;
+//            case 2:
+//                digitalWrite(STEPPER_PIN_1, LOW);
+//                digitalWrite(STEPPER_PIN_2, LOW);
+//                digitalWrite(STEPPER_PIN_3, HIGH);
+//                digitalWrite(STEPPER_PIN_4, LOW);
+//                break;
+//            case 3:
+//                digitalWrite(STEPPER_PIN_1, LOW);
+//                digitalWrite(STEPPER_PIN_2, LOW);
+//                digitalWrite(STEPPER_PIN_3, LOW);
+//                digitalWrite(STEPPER_PIN_4, HIGH);
+//                break;
+//        }
+//    }else{
+//        switch(step_number){
+//            case 0:
+//                digitalWrite(STEPPER_PIN_1, LOW);
+//                digitalWrite(STEPPER_PIN_2, LOW);
+//                digitalWrite(STEPPER_PIN_3, LOW);
+//                digitalWrite(STEPPER_PIN_4, HIGH);
+//                break;
+//            case 1:
+//                digitalWrite(STEPPER_PIN_1, LOW);
+//                digitalWrite(STEPPER_PIN_2, LOW);
+//                digitalWrite(STEPPER_PIN_3, HIGH);
+//                digitalWrite(STEPPER_PIN_4, LOW);
+//                break;
+//            case 2:
+//                digitalWrite(STEPPER_PIN_1, LOW);
+//                digitalWrite(STEPPER_PIN_2, HIGH);
+//                digitalWrite(STEPPER_PIN_3, LOW);
+//                digitalWrite(STEPPER_PIN_4, LOW);
+//                break;
+//            case 3:
+//                digitalWrite(STEPPER_PIN_1, HIGH);
+//                digitalWrite(STEPPER_PIN_2, LOW);
+//                digitalWrite(STEPPER_PIN_3, LOW);
+//                digitalWrite(STEPPER_PIN_4, LOW);
+//
+//
+//        }
+//    }
+//    step_number++;
+//    if(step_number > 3){
+//        step_number = 0;
+//    }
+//}
+void citire( short v[7][7][7] )
+{
+  v[0][0][0] = 0;  v[0][0][1] = 0;  v[0][0][2] = 0;
+  v[0][1][0] = 0;  v[0][1][1] = 0;  v[0][1][2] = 0;
+  v[0][2][0] = 0;  v[0][2][1] = 0;  v[0][2][2] = 0;
+
+  v[1][0][0] = 1;  v[1][0][1] = 4;  v[1][0][2] = 1;
+  v[1][1][0] = 1;  v[1][1][1] = 1;  v[1][1][2] = 1;
+  v[1][2][0] = 1;  v[1][2][1] = 1;  v[1][2][2] = 1;
+
+  v[2][0][0] = 2;  v[2][0][1] = 3;  v[2][0][2] = 2;
+  v[2][1][0] = 2;  v[2][1][1] = 2;  v[2][1][2] = 2;
+  v[2][2][0] = 2;  v[2][2][1] = 2;  v[2][2][2] = 2;
+
+  v[3][0][0] = 3;  v[3][0][1] = 3;  v[3][0][2] = 3;
+  v[3][1][0] = 3;  v[3][1][1] = 3;  v[3][1][2] = 3;
+  v[3][2][0] = 3;  v[3][2][1] = 2;  v[3][2][2] = 3;
+
+  v[4][0][0] = 4;  v[4][0][1] = 1;  v[4][0][2] = 4;
+  v[4][1][0] = 4;  v[4][1][1] = 4;  v[4][1][2] = 4;
+  v[4][2][0] = 4;  v[4][2][1] = 4;  v[4][2][2] = 4;
+
+  v[5][0][0] = 5;  v[5][0][1] = 5;  v[5][0][2] = 5;
+  v[5][1][0] = 5;  v[5][1][1] = 5;  v[5][1][2] = 5;
+  v[5][2][0] = 5;  v[5][2][1] = 5;  v[5][2][2] = 5;
+
+//    for( short i = 0 ; i < 6 ; i ++ )
+//        for(short j = 0 ; j < 3 ; j ++)
+//            for(short k = 0 ; k < 3 ; k ++)
+//                v[i][j][k] = i;
+        //citire_fata_cub(v[i],f);
+
+}
+
+// ///////////////////////////////////////////////////////////////// verificare cub
+short verif( short x, short y, short culoare1, short culoare2)
+{
+    if((x == culoare2 && y == culoare1) || (x == culoare1 && y == culoare2))
+        return 1;
+    return 0;
+}
+short verificare(short x, short y, short z, short culoare0, short culoare1, short culoare2);
+short potrivire_culoare_colturi(short cub[7][7][7], short culoare0, short culoare1, short culoare2){
+    short ok = 0 ;
+    if(verificare(cub[1][0][2], cub[2][0][0], cub[5][2][2], culoare0, culoare1, culoare2))
+        ok++;
+    if(verificare(cub[1][0][0], cub[4][0][2], cub[5][2][0], culoare0, culoare1, culoare2))
+        ok++;
+    if(verificare(cub[1][2][0], cub[4][2][2], cub[0][0][0], culoare0, culoare1, culoare2))
+        ok++;
+    if(verificare(cub[1][2][2], cub[2][2][0], cub[0][0][2], culoare0, culoare1, culoare2))
+        ok++;
+    if(verificare(cub[3][2][0], cub[5][0][0], cub[4][0][0], culoare0, culoare1, culoare2))
+        ok++;
+    if(verificare(cub[3][2][2], cub[2][0][2], cub[5][0][2], culoare0, culoare1, culoare2))
+        ok++;
+    if(verificare(cub[3][0][0], cub[0][2][0], cub[4][2][0], culoare0, culoare1, culoare2))
+        ok++;
+    if(verificare(cub[3][0][2], cub[0][2][2], cub[2][2][2], culoare0, culoare1, culoare2))
+        ok++;
+    if(ok != 1)
+        return 0;
+    return 1;
+}
+
+short potrivire_culoare(short cub[7][7][7], short i, short j){
+    short ok = 0 ;
+    if(verif(cub[1][0][1], cub[5][2][1], i, j) )
+        ok ++;
+    if(verif(cub[1][1][0], cub[4][1][2], i, j) )
+        ok ++;
+    if(verif(cub[1][2][1], cub[0][0][1], i, j) )
+        ok ++;
+    if(verif(cub[1][1][2], cub[2][1][0], i, j) )
+        ok ++;
+    if(verif(cub[5][1][2], cub[2][0][1], i, j) )
+        ok ++;
+    if(verif(cub[5][1][0], cub[4][0][1], i, j) )
+        ok ++;
+    if(verif(cub[0][1][2], cub[2][2][1], i, j) )
+        ok ++;
+    if(verif(cub[0][1][0], cub[4][2][1], i, j) )
+        ok ++;
+    if(verif(cub[3][2][1], cub[5][0][1], i, j) )
+        ok ++;
+    if(verif(cub[3][1][0], cub[4][1][0], i, j) )
+        ok ++;
+    if(verif(cub[3][0][1], cub[0][2][1], i, j) )
+        ok ++;
+    if(verif(cub[3][1][2], cub[2][1][2], i, j) )
+        ok ++;
+    if(ok != 1)
+        return 0;
+    return 1;
+}
+short verificare_cub(short cub[7][7][7]){
+    if(cub[4][1][1] != 4 || cub[3][1][1] != 3 || cub[2][1][1] != 2 ||cub[1][1][1] != 1 || cub[0][1][1] != 0 || cub[5][1][1] != 5)
+        return 0;
+    if(potrivire_culoare(cub, 1, 4) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 1, 5) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 1, 2) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 1, 0) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 5, 4) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 5, 2) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 0, 4) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 0, 2) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 3, 4) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 3, 5) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 3, 2) == 0)
+        return 0;
+    if(potrivire_culoare(cub, 3, 0) == 0)
+        return 0;
+    if (potrivire_culoare_colturi(cub, 1, 2, 0) == 0)
+        return 0;
+    if (potrivire_culoare_colturi(cub, 1, 2, 5) == 0)
+        return 0;
+    if (potrivire_culoare_colturi(cub, 1, 4, 5) == 0)
+        return 0;
+    if (potrivire_culoare_colturi(cub, 1, 4, 0) == 0)
+        return 0;
+    if (potrivire_culoare_colturi(cub, 3, 5, 2) == 0)
+        return 0;
+    if (potrivire_culoare_colturi(cub, 3, 5, 4) == 0)
+        return 0;
+    if (potrivire_culoare_colturi(cub, 3, 4, 0) == 0)
+        return 0;
+    if (potrivire_culoare_colturi(cub, 3, 2, 0) == 0)
+        return 0;
+    return 1;
+}
+// ///////////////////////////////////////////////////////////////// rotire cub
+void rotire_fata( short cub[7][7][7], short fata)
+{
+    short aux1, aux2 ;
+    aux1 = cub[fata][0][1];
+    aux2 = cub[fata][0][2];
+    cub[fata][0][2] = cub[fata][0][0];
+    cub[fata][0][1] = cub[fata][1][0];
+    cub[fata][0][0] = cub[fata][2][0];
+
+    cub[fata][2][0] = cub[fata][2][2];
+    cub[fata][1][0] = cub[fata][2][1];
+
+    cub[fata][2][1] = cub[fata][1][2];
+    cub[fata][2][2] = aux2;
+
+    cub[fata][1][2] = aux1;
+}
+
+void right_face(short cub[7][7][7]){
+
+    short aux0 = cub[3][0][2], aux1 = cub[3][1][2], aux2 = cub[3][2][2];
+    for( short i = 0 ; i < 3 ; i ++ )
+    {
+        cub[3][i][2] = cub[5][i][2];
+        cub[5][i][2] = cub[1][i][2];
+        cub[1][i][2] = cub[0][i][2];
+    }
+    cub[0][0][2] = aux0;
+    cub[0][1][2] = aux1;
+    cub[0][2][2] = aux2;
+//@    if(dreapta == 5 || dreapta == 3)
+//      mutare_up(dreapta);
+//    else
+//      mutare_down(dreapta);
+//@    delay(2000);
+    rotire_fata(cub, 2);
+}
+
+void left_face(short cub[7][7][7]){
+
+    short aux0 = cub[3][0][0], aux1 = cub[3][1][0], aux2 = cub[3][2][0];
+    for( short i = 0 ; i < 3 ; i ++ )
+    {
+        cub[3][i][0] = cub[5][i][0];
+        cub[5][i][0] = cub[1][i][0];
+        cub[1][i][0] = cub[0][i][0];
+    }
+    cub[0][0][0] = aux0;
+    cub[0][1][0] = aux1;
+    cub[0][2][0] = aux2;
+
+    rotire_fata(cub, 4);
+    rotire_fata(cub, 4);
+    rotire_fata(cub, 4);
+//@    if(stanga == 3 || stanga == 5)
+//       mutare_down(stanga);
+//    else
+//       mutare_up(stanga);
+//@    delay(2000);
+}
+
+void back_face(short cub[7][7][7])
+{
+    short aux0 = cub[5][0][0], aux1 = cub[5][0][1], aux2 = cub[5][0][2];
+    for( short i = 0 ; i < 3 ; i ++ ){
+        cub[5][0][i] = cub[2][i][2];
+    }
+    for( short i = 0 ; i < 3 ; i ++ ){
+        cub[2][2-i][2] = cub[0][2][i];
+    }
+    for( short i = 0 ; i < 3 ; i ++ ) {
+        cub[0][2][i] = cub[4][i][0];
+    }
+    cub[4][0][0] = aux2 ;
+    cub[4][1][0] = aux1 ;
+    cub[4][2][0] = aux0 ;
+
+    rotire_fata(cub, 3);
+//@    if(spate == 6 || spate == 4)
+//       mutare_down(spate);
+//    else
+//       mutare_up(spate);
+//@    delay(2000);
+}
+
+void front_face(short cub[7][7][7])
+{
+    short aux0 = cub[5][2][0], aux1 = cub[5][2][1], aux2 = cub[5][2][2];
+    for( short i = 0 ; i < 3 ; i ++ ){
+        cub[5][2][i] = cub[2][i][0];
+    }
+    for( short i = 0 ; i < 3 ; i ++ ){
+        cub[2][2-i][0] = cub[0][0][i];
+    }
+    for( short i = 0 ; i < 3 ; i ++ ) {
+        cub[0][0][i] = cub[4][i][2];
+    }
+    cub[4][0][2] = aux2 ;
+    cub[4][1][2] = aux1 ;
+    cub[4][2][2] = aux0 ;
+
+    rotire_fata(cub, 1);
+    rotire_fata(cub, 1);
+    rotire_fata(cub, 1);
+//@    if(fataa == 4 || fataa == 6)
+//        mutare_up(fataa);
+//    else
+//        mutare_down(fataa);
+//@    delay(2000);
+}
+
+void up_face(short cub[7][7][7])
+{
+    short aux0 = cub[3][2][0], aux1 = cub[3][2][1], aux2 = cub[3][2][2];
+    for( short i = 0 ; i < 3 ; i ++ )
+    {
+        cub[3][2][i] = cub[4][0][2-i];
+    }
+    for( short i = 0 ; i < 3 ; i ++ )
+    {
+        cub[4][0][i] = cub[1][0][i];
+        cub[1][0][i]= cub[2][0][i];
+    }
+    cub[2][0][0] = aux2 ;
+    cub[2][0][1] = aux1 ;
+    cub[2][0][2] = aux0 ;
+
+    rotire_fata(cub, 5);
+    //@mutare_down(sus);
+    //@delay(2000);
+
+}
+
+void down_face(short cub[7][7][7])
+{
+    short aux0 = cub[3][0][0], aux1 = cub[3][0][1], aux2 = cub[3][0][2];
+    for( short i = 0 ; i < 3 ; i ++ )
+    {
+        cub[3][0][i] = cub[4][2][2-i];
+    }
+    for( short i = 0 ; i < 3 ; i ++ )
+    {
+        cub[4][2][i] = cub[1][2][i];
+        cub[1][2][i] = cub[2][2][i];
+    }
+    cub[2][2][0] = aux2 ;
+    cub[2][2][1] = aux1 ;
+    cub[2][2][2] = aux0 ;
+
+    rotire_fata(cub, 0);
+    rotire_fata(cub, 0);
+    rotire_fata(cub, 0);
+    //@mutare_up(jos);
+    //@delay(2000);
+}
+
+void right_face_prim(short cub[7][7][7]){
+    right_face( cub);
+    right_face( cub);
+    right_face( cub);
+    //mutare_up(dreapta);
+   // delay(2000);
+}
+void down_face_prim(short cub[7][7][7]){
+    down_face( cub);
+    down_face( cub);
+    down_face( cub);
+   // mutare_down(jos);
+    //delay(2000);
+}
+void up_face_prim(short cub[7][7][7]){
+    up_face( cub);
+    up_face( cub);
+    up_face( cub);
+   // mutare_up(sus);
+    //delay(2000);
+}
+void front_face_prim(short cub[7][7][7]){
+    front_face( cub);
+    front_face( cub);
+    front_face( cub);
+   // mutare_up(fataa);
+    //delay(2000);
+}
+void back_face_prim(short cub[7][7][7]){
+    back_face( cub);
+    back_face( cub);
+    back_face( cub);
+    //mutare_down(spate);
+    //delay(2000);
+}
+void left_face_prim(short cub[7][7][7]){
+    left_face( cub);
+    left_face( cub);
+    left_face( cub);
+    //mutare_down(stanga);
+    //delay(2000);
+}
+void middle_face(short cub[7][7][7]) {
+    short aux0 = cub[3][1][0], aux1 = cub[3][1][1], aux2 = cub[3][1][2];
+    for (short i = 0; i < 3; i++) {
+        cub[3][1][i] = cub[4][1][2 - i];
+    }
+    for (short i = 0; i < 3; i++) {
+        cub[4][1][i] = cub[1][1][i];
+        cub[1][1][i] = cub[2][1][i];
+    }
+    cub[2][1][0] = aux2;
+    cub[2][1][1] = aux1;
+    cub[2][1][2] = aux0;
+    //@mutare_up(sus);
+    //@mutare_down(jos);
+    short aux = dreapta;
+    dreapta = spate;
+    spate = stanga;
+    stanga = fataa;
+    fataa = aux;
+}
+// ///////////////////////////////////////////////////////////////// pas 1
+void cruce_maker(short cub[7][7][7])
+{
+    short culoare1 = cub[1][1][1], culoare2 = cub[0][1][1];
+    if(cub[1][2][1] == culoare2 && cub[0][0][1] == culoare1)
+        front_face(cub);
+    //verificare lateral jos
+    if((cub[0][1][2] == culoare2 && cub[2][2][1] == culoare1)||(cub[0][1][2] == culoare1 && cub[2][2][1] == culoare2))
+        right_face(cub);
+    if((cub[0][1][0] == culoare1 && cub[4][2][1] == culoare2) || (cub[0][1][0] == culoare2 && cub[4][2][1] == culoare1))
+        left_face(cub);
+    //verificare spatele cubului
+    if((cub[0][2][1] == culoare2 && cub[3][0][1] == culoare1) || (cub[0][2][1] == culoare1 && cub[3][0][1] == culoare2)){
+        back_face(cub);
+        back_face(cub);
+    }
+    if((cub[3][1][2] == culoare1 && cub[2][1][2] == culoare2) || (cub[3][1][2] == culoare2 && cub[2][1][2] == culoare1)){
+        right_face_prim(cub);
+        up_face(cub);
+        right_face(cub);
+    }
+    if((cub[4][1][0] == culoare2 && cub[3][1][0] == culoare1) || (cub[4][1][0] == culoare1 && cub[3][1][0] == culoare2)){
+        left_face_prim(cub);
+        up_face_prim(cub);
+        left_face(cub);
+    }
+
+    if((cub[5][0][1] == culoare1 && cub[3][2][1] == culoare2) || (cub[5][0][1] == culoare2 && cub[3][2][1] == culoare1)){
+        up_face(cub);
+        up_face(cub);
+    }
+    if((cub[5][1][2] == culoare2 && cub[2][0][1] == culoare1) || (cub[5][1][2] == culoare1 && cub[2][0][1] == culoare2))
+        up_face(cub);
+    if((cub[5][1][0] == culoare1 && cub[4][0][1] == culoare2) || (cub[5][1][0] == culoare2 && cub[4][0][1] == culoare1))
+        up_face_prim(cub);
+
+    if(cub[1][1][0] == culoare1 && cub [4][1][2] == culoare2)
+        front_face(cub);
+    if(cub[1][0][1] == culoare1 && cub [5][2][1] == culoare2){
+        front_face(cub);
+        front_face(cub);
+    }
+    if(cub[1][1][2] == culoare1 && cub [2][1][0] == culoare2){
+        front_face_prim(cub);
+    }
+    //daca sunt pe dos culorile
+    if(cub[1][1][0] == culoare2 && cub [4][1][2] == culoare1) {
+        left_face(cub);
+        up_face_prim(cub);
+        left_face_prim(cub);
+        front_face(cub);
+        front_face(cub);
+    }
+    if(cub[1][0][1] == culoare2 && cub [5][2][1] == culoare1){
+        up_face_prim(cub);
+        right_face_prim(cub);
+        front_face_prim(cub);
+        right_face(cub);
+    }
+    if(cub[1][1][2] == culoare2 && cub [2][1][0] == culoare1){
+        right_face(cub);
+        up_face(cub);
+        right_face_prim(cub);
+        front_face(cub);
+        front_face(cub);
+    }
+    //sf pe dos
+
+}
+
+void cruce(short cub[7][7][7] ) {
+    cruce_maker(cub);//prima piesa
+    // afisare(cub);
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    cruce_maker(cub);//a doua piesa
+    //afisare(cub);
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    cruce_maker(cub);//a treia piesa
+    // afisare(cub);
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    cruce_maker(cub);//a patra piesa
+    //readucerea cubului la pozitia initiala
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    if(cub[1][2][1] != cub[1][1][1] || cub[2][2][1] != cub[2][1][1] || cub[4][1][1] != cub[4][2][1] || cub[3][1][1] != cub[3][0][1])
+        //Serial.print("Eroare la pasul 1");
+        std::cout<<"Eroare la pasul 1\n";
+    else
+    if(cub[0][1][1] != cub[0][0][1] || cub[0][0][1] != cub[0][1][2] || cub[0][1][2] != cub[0][2][1] || cub[0][2][1] != cub[0][1][0])
+        //Serial.print("Eroare la pasul 1");
+        std::cout<<"Eroare la pasul 1\n";
+}
+// ///////////////////////////////////////////////////////////////// pas 2
+short verificare(short x, short y, short z, short culoare0, short culoare1, short culoare2)
+{//verifca daca piesa este cea cautata
+    if(x == culoare0 && y == culoare1 && z == culoare2)
+        return 1;
+    if(x == culoare1 && y == culoare2 && z == culoare0)
+        return 1;
+    if(x == culoare2 && y == culoare0 && z == culoare1)
+        return 1;
+    if(x == culoare1 && y == culoare0 && z == culoare2)
+        return 1;
+    if(x == culoare0 && y == culoare2 && z == culoare1)
+        return 1;
+    if(x == culoare2 && y == culoare1 && z == culoare0)
+        return 1;
+    return 0;
+}
+
+void colt(short cub[7][7][7]){
+    //fixeaza colturile
+    if(verificare(cub[2][2][2], cub[3][0][2], cub[0][2][2], 0, cub[2][1][1], cub[1][1][1])) {
+        back_face(cub);
+        up_face(cub);
+        back_face_prim(cub);
+    }
+    if(verificare(cub[4][2][0], cub[3][0][0], cub[0][2][0], 0, cub[2][1][1], cub[1][1][1])){
+        left_face_prim(cub);
+        up_face(cub);
+        left_face(cub);
+    }
+    if(verificare(cub[1][2][0], cub[0][0][0], cub[4][2][2], 0, cub[2][1][1], cub[1][1][1])){
+        left_face(cub);
+        up_face_prim(cub);
+        left_face_prim(cub);
+    }
+    short nr = 0;
+    while(verificare(cub[1][2][2], cub[0][0][2], cub[2][2][0], 0, cub[1][1][1], cub[2][1][1]) == 0){
+        right_face(cub);
+        up_face_prim(cub);
+        right_face_prim(cub);
+        nr++;
+        if(nr == 4 )
+            up_face(cub);
+        if(nr == 8)
+            break;
+    }
+    if(nr == 8)
+        //Serial.print("Eroare la pasul 2\n");
+        std::cout<<"Eroare la pasul 2\n";
+    nr = 0 ;
+    while(cub[0][0][2] != 0)
+    {
+        right_face(cub);
+        up_face(cub);
+        right_face_prim(cub);
+        up_face_prim(cub);
+        right_face(cub);
+        up_face(cub);
+        right_face_prim(cub);
+        nr++;
+        if(nr == 8)
+            break;
+    }
+    if(nr == 8)
+        //Serial.print("Eroare la pasul 2'\n");
+        std::cout<<"Eroare la pasul 2\n";
+}
+
+void completare_alb(short cub[7][7][7]){
+    colt(cub);//primul colt
+    //afisare(cub);
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    colt(cub);//al doilea colt
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    colt(cub);//al treilea colt
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    colt(cub);//al patrulea colt
+    //readucerea la pozitia initiala
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    //afisare(cub);
+}
+
+// ///////////////////////////////////////////////////////////////// pas 3
+void pozitionare_piesa_dreapta(short cub[7][7][7]){
+    up_face(cub);
+    right_face(cub);
+    up_face_prim(cub);
+    right_face_prim(cub);
+    up_face_prim(cub);
+    front_face(cub);
+    up_face(cub);
+    front_face_prim(cub);
+}
+void pozitionare_piesa_stanga(short cub[7][7][7]){
+    up_face_prim(cub);
+    left_face(cub);
+    up_face(cub);
+    left_face_prim(cub);
+    up_face(cub);
+    front_face_prim(cub);
+    up_face_prim(cub);
+    front_face(cub);
+}
+void layer2_peace_by_peace(short cub[7][7][7]){
+    if(cub[1][1][2] == cub[2][1][1] && cub[2][1][0] == cub[1][1][1])
+        pozitionare_piesa_dreapta(cub);
+    if(verif(cub[1][1][1], cub[2][1][1], cub[2][1][2], cub[3][1][2]))
+    {
+        up_face(cub);
+        down_face(cub);
+        middle_face(cub);
+        pozitionare_piesa_dreapta(cub);//scot piesa pe care o caut
+        //repozitionare cub
+        up_face_prim(cub);
+        down_face_prim(cub);
+        middle_face(cub);
+        middle_face(cub);
+        middle_face(cub);
+    }
+    if(verif(cub[1][1][1], cub[2][1][1], cub[4][1][0], cub[3][1][0]))
+    {
+        up_face(cub);
+        down_face(cub);
+        middle_face(cub);
+        up_face(cub);
+        down_face(cub);
+        middle_face(cub);
+        pozitionare_piesa_dreapta(cub);
+        up_face(cub);
+        down_face(cub);
+        middle_face(cub);
+        up_face(cub);
+        down_face(cub);
+        middle_face(cub);
+    }
+    if(verif(cub[1][1][1], cub[2][1][1], cub[1][1][0], cub[4][1][2]))
+    {
+        up_face_prim(cub);
+        down_face_prim(cub);
+        middle_face(cub);
+        middle_face(cub);
+        middle_face(cub);
+        pozitionare_piesa_dreapta(cub);
+        up_face(cub);
+        down_face(cub);
+        middle_face(cub);
+    }
+    if(cub[1][1][1] != cub[1][1][2] || cub[2][1][1] != cub[2][1][0]){
+    for(short i = 0 ; i < 4 ; i ++ )
+    {
+        for(short j = 0 ; j < 4 ; j ++){
+            if(cub[1][0][1] == cub[1][1][1] && cub[5][2][1] == cub[2][1][1])
+                pozitionare_piesa_dreapta(cub);
+            up_face(cub);
+        }
+        middle_face(cub);
+        down_face(cub);
+    }
+    for(short i = 0 ; i < 4 ; i ++ )
+    {
+        for(short j = 0 ; j < 4 ; j ++) {
+            if (cub[1][0][1] == cub[1][1][1] && cub[5][2][1] == cub[4][1][1])
+                pozitionare_piesa_stanga(cub);
+            up_face(cub);
+        }
+        middle_face(cub);
+        down_face(cub);
+    }
+    }
+}
+
+void layer2(short cub[7][7][7]){
+    layer2_peace_by_peace(cub);//piesa 1
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    layer2_peace_by_peace(cub);//piesa 2
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    layer2_peace_by_peace(cub);//piesa 3
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    layer2_peace_by_peace(cub);//piesa 4
+    //repozitionarea cubului
+    up_face(cub);
+    middle_face(cub);
+    down_face(cub);
+    //afisare(cub);
+}
+// ///////////////////////////////////////////////////////////////// pas 4
+void algorithm(short cub[7][7][7]){
+    front_face_prim(cub);
+    up_face(cub);
+    right_face(cub);
+    up_face_prim(cub);
+    right_face_prim(cub);
+    front_face(cub);
+}
+
+void top_x(short cub[7][7][7]){
+    short ok = 0 ;
+    //5 reprezshorta culoarea galben
+    if(cub[5][1][0] != 5 && cub[5][1][2] != 5 && cub[5][0][1] != 5 && cub[5][2][1] != 5)
+        algorithm(cub);
+    while( cub[5][1][0] != 5 || cub[5][1][2] != 5 || cub[5][0][1] != 5 || cub[5][2][1] != 5){
+        ok ++;
+        for(short i = 0 ; i < 4 ; i ++) {
+            if (cub[5][0][1] == 5 && cub[5][1][0] == 5 && cub[5][1][2] != 5)
+                algorithm(cub);
+            up_face(cub);
+        }
+        if(cub[5][1][0] == 5 && cub[5][1][2] == 5 && cub[5][2][1] != 5)
+            algorithm(cub);
+        if(cub[5][1][0] == 5 && cub[5][1][2] == 5 && cub[5][2][1] != 5)
+            algorithm(cub);
+        up_face(cub);
+        if(ok == 8)
+            break;
+    }
+    if (ok == 8)
+        //Serial.print("Eroare la pasul 4\n");
+        std::cout<<"Eroare la pasul 4\n";
+}
+// ///////////////////////////////////////////////////////////////// pas 5
+void algorithm_pasul5(short cub[7][7][7]){
+    right_face(cub);
+    up_face(cub);
+    right_face_prim(cub);
+    up_face(cub);
+    right_face(cub);
+    up_face(cub);
+    up_face(cub);
+    right_face_prim(cub);
+}
+
+void creare_fata_galbena(short cub[7][7][7]){
+    short ok = 0;
+    //5 reprezshorta culoarea galben
+    while (cub[5][0][0] != 5 || cub[5][0][2] != 5 || cub[5][2][2] != 5){
+        ok ++;
+        for(short i = 0 ; i < 4 ; i ++ )//caz 1
+        {
+            if(cub[5][2][0] == 5 && cub[5][0][0] != 5 && cub[5][0][2] != 5 && cub[5][2][2] != 5)
+                algorithm_pasul5(cub);
+            up_face(cub);
+        }
+        for(short i = 0 ; i < 4 ; i ++ )//caz 2
+        {
+            if(cub[4][0][2] == 5 && cub[5][2][0] != 5 && cub[5][0][0] != 5 && cub[5][0][2] != 5 && cub[5][2][2] != 5)
+                algorithm_pasul5(cub);
+            up_face(cub);
+        }
+        for(short i = 0 ; i < 4 ; i ++ )//caz 3
+        {
+            if(cub[1][0][0] == 5 && cub[5][0][0] == 5 && cub[5][0][2] == 5 && cub[5][2][2] != 5)
+                algorithm_pasul5(cub);
+            up_face(cub);
+        }
+        for(short i = 0 ; i < 4 ; i ++ )//caz 4
+        {
+            if(cub[1][0][0] == 5 && cub[5][0][0] == 5 && cub[5][0][2] != 5 && cub[5][2][2] == 5)
+                algorithm_pasul5(cub);
+            up_face(cub);
+        }
+        for(short i = 0 ; i < 4 ; i ++ )//caz 5
+        {
+            if(cub[1][0][0] == 5 && cub[5][0][0] != 5 && cub[5][0][2] == 5 && cub[5][2][2] == 5)
+                algorithm_pasul5(cub);
+            up_face(cub);
+        }
+        if(ok == 6)
+            break;
+    }
+    if(ok == 6)
+        //Serial.print("Eroare la pasul 5\n");
+        std::cout<<"Eroare la pasul 5\n";
+    //afisare(cub);
+}
+// ///////////////////////////////////////////////////////////////// pas 6
+void algorithm_pasul6(short cub[7][7][7]){
+    right_face_prim(cub);
+    front_face_prim(cub);
+    right_face_prim(cub);
+    back_face(cub);
+    back_face(cub);
+    right_face(cub);
+    front_face(cub);
+    right_face_prim(cub);
+    back_face(cub);
+    back_face(cub);
+    right_face(cub);
+    right_face(cub);
+    up_face_prim(cub);
+}
+
+short verificare_pozitie_colturi(short cub[7][7][7]){
+    if(cub[1][0][0] != cub[1][1][1] || cub[4][0][2] != cub[4][1][1])
+        return 0;
+    if(cub[1][0][2] != cub[1][1][1] || cub[2][0][0] != cub[2][1][1])
+        return 0;
+    if(cub[3][2][0] != cub[3][1][1] || cub[4][0][0] != cub[4][1][1])
+        return 0;
+    if(cub[2][0][2] != cub[2][1][1] || cub[3][2][2] != cub[3][1][1])
+        return 0;
+    return 1;
+}
+
+void pozitionare_colturi(short cub[7][7][7])
+{
+    short ok = 0, nr = 0;
+    while(ok < 2){
+        ok = 0;
+        up_face(cub);
+        if(cub[1][0][0] == cub[1][1][1] && cub[4][0][2] == cub[4][1][1])
+            ok ++;
+        if(cub[1][0][2] == cub[1][1][1] && cub[2][0][0] == cub[2][1][1])
+            ok ++;
+        if(cub[3][2][0] == cub[3][1][1] && cub[4][0][0] == cub[4][1][1])
+            ok ++;
+        if(cub[2][0][2] == cub[2][1][1] && cub[3][2][2] == cub[3][1][1])
+            ok ++;
+        nr++;
+        if(nr == 6)
+            break;
+    }
+    if(nr == 6)
+        //Serial.print("Eroare la pasul 6\n");
+        std::cout<<"Eroare la pasul 6\n";
+    nr = 0;
+    while (verificare_pozitie_colturi(cub) == 0){
+        for (short i = 0; i < 4; i++) {
+            if(cub[1][0][0] != cub[1][1][1] && cub[1][0][2] != cub[1][1][1])
+                algorithm_pasul6(cub);
+            up_face(cub);
+            middle_face(cub);
+            down_face(cub);
+        }
+        if(cub[1][0][0] == cub[1][1][1] && cub[1][0][2] != cub[1][1][1])
+            algorithm_pasul6(cub);
+        else{
+            up_face(cub);
+            middle_face(cub);
+            down_face(cub);
+            if(cub[1][0][0] == cub[1][1][1] && cub[1][0][2] != cub[1][1][1])
+                algorithm_pasul6(cub);
+            up_face_prim(cub);
+            middle_face(cub);
+            middle_face(cub);
+            middle_face(cub);
+            down_face_prim(cub);
+        }
+        nr ++;
+        if(nr == 6)
+            break;
+    }
+    if (nr == 6)
+        //Serial.print("Eroare la pasul 6'\n");
+        std :: cout<<"Eroare la pasul 6'\n";
+    //afisare(cub);
+}
+// ///////////////////////////////////////////////////////////////// pas 7
+void algorithm_pasul7(short cub[7][7][7]){
+    front_face_prim(cub);
+    front_face_prim(cub);
+    up_face(cub);
+    left_face_prim(cub);
+    right_face_prim(cub);
+    front_face_prim(cub);
+    front_face_prim(cub);
+    left_face(cub);
+    right_face(cub);
+    up_face(cub);
+    front_face_prim(cub);
+    front_face_prim(cub);
+}
+
+void aranjare_muchii(short cub[7][7][7]){
+    short ok = 0, nr = 0 ;
+    if(cub[3][2][1] != cub[3][1][1] && cub[2][0][1] != cub[2][1][1] && cub[1][0][1] != cub[1][1][1] && cub[4][0][1] != cub[4][1][1])
+        algorithm_pasul7(cub);
+    while (cub[3][2][1] != cub[3][1][1])
+    {
+        nr++;//pentru a aduce cubul la pozitia initiala
+        up_face(cub);
+        middle_face(cub);
+        down_face(cub);
+        if(nr == 4)
+            break;
+    }
+    if(nr == 4)
+        //Serial.print("Eroare la pasul 7\n");
+        std::cout << "Eroare la pasul 7\\n";
+    while ( cub[1][0][1] != cub[1][1][1] || cub[2][0][1] != cub[2][1][1])
+    {
+        algorithm_pasul7(cub);
+        ok ++;
+        if( ok == 6)
+            break;
+    }
+    if(ok == 6)
+        //Serial.print("Eroare la pasul 7\n");
+        std::cout << "Eroare la pasul 7\\n";
+    for( short i = 0 ; i < 4 - nr ; i ++ )
+    {//pentru a readuce cubul la pozitia initiala
+        up_face(cub);
+        middle_face(cub);
+        down_face(cub);
+    }
+    //afisare(cub);
+}
+// /////////////////////////////////////////////////////////////////
+//void amestecare(short cub[7][7][7]){
+//  int nr = 0;
+//  while(true){
+//  delay(60);
+//     lcd.setCursor(0, 0);
+//    bool presst1 = digitalRead(button1);
+//    if(presst1 == false){
+//      //Serial.print("hello1\n");
+//      //right_face(cub);
+//      nr ++;
+//      while(digitalRead(button1) == false){
+//        ;
+//      }
+//    }
+//    bool presst2 = digitalRead(button2);
+//    if(nr == 7)
+//    {
+//      nr = 0;
+//    }
+//    if(nr == 0){
+//      //lcd.setCursor(0, 0);
+//      lcd.print("fata           ");
+//
+//      presst2 = digitalRead(button2);
+//      if(presst2 == false){
+//      front_face(cub);
+//      while(digitalRead(button2) == false){
+//        ;
+//      }
+//      //delay(200);
+//    }
+//    }
+//    if(nr == 1){
+//      //lcd.setCursor(0, 0);
+//      lcd.print("stanga         ");
+//      presst2 = digitalRead(button2);
+//      if(presst2 == false){
+//      left_face(cub);
+//      while(digitalRead(button2) == false){
+//        ;
+//      }
+//     // delay(200);
+//    }
+//    }
+//    if(nr == 2){
+//      //lcd.setCursor(0, 0);
+//      lcd.print("dreapta        ");
+//      presst2 = digitalRead(button2);
+//      if(presst2 == false){
+//      right_face(cub);
+//      while(digitalRead(button2) == false){
+//        ;
+//      }
+//    }
+//    }
+//    if(nr == 3){
+//      //lcd.setCursor(0, 0);
+//      lcd.print("spate          ");
+//      presst2 = digitalRead(button2);
+//      if(presst2 == false){
+//      back_face(cub);
+//      while(digitalRead(button2) == false){
+//        ;
+//      }
+//    }
+//    }
+//    if(nr == 4){
+//      //lcd.setCursor(0, 0);
+//      lcd.print("sus            ");
+//      presst2 = digitalRead(button2);
+//      if(presst2 == false){
+//      up_face(cub);
+//      while(digitalRead(button2) == false){
+//        ;
+//      }
+//    }
+//    }
+//    if(nr == 5){
+//     // lcd.setCursor(0, 0);
+//      lcd.print("jos            ");
+//      presst2 = digitalRead(button2);
+//      if(presst2 == false){
+//      down_face(cub);
+//      while(digitalRead(button2) == false){
+//        ;
+//      }
+//    }
+//    }
+//    if(nr == 6){
+//      //lcd.setCursor(0, 0);
+//      lcd.print("Start Amestecare");
+//      presst2 = digitalRead(button2);
+//      if(presst2 == false){
+//      break;
+//      while(digitalRead(button2) == false){
+//        ;
+//      }
+//      }
+//    }
+//  }
+//}
+////////////////////////////////
+
+int main() {
+/*@
+  digitalWrite(jos, HIGH);
+  digitalWrite(sus, HIGH);
+  digitalWrite(stanga, HIGH);
+  digitalWrite(dreapta, HIGH);
+  digitalWrite(fataa, HIGH);
+  digitalWrite(spate, HIGH);
+  */
+  //lcd.print("olla");
+  //delay(200);
+    citire(cub);
+    //@delay(5000);
+    if(verificare_cub(cub) == 0)
+        //Serial.print("Cubul shortrodus nu este corect\n");
+        std::cout<<"Cubul shortrodus nu este corect\n";
+    else {
+      //Serial.print("Cubul este bun\n");
+        std::cout<<"Cubul este bun\n";
+        //@amestecare(cub);
+//      front_face(cub);
+//      back_face(cub);
+//      right_face(cub);
+//      left_face(cub);
+//      up_face(cub);
+//      down_face(cub);
+//      middle_face(cub);
+//      right_face(cub);
+//      front_face(cub);
+//      back_face(cub);
+//      right_face(cub);
+//      left_face(cub);
+        cruce(cub);//pasul1
+        //Serial.print("Gata pasul 1\n");
+        std::cout << "Gata pasul 1\n";
+        completare_alb(cub);//pasul2
+        //Serial.print("Gata pasul 2\n");
+        std::cout << "Gata pasul 2\n";
+        layer2(cub);//pasul3
+        //Serial.print("Gata pasul 3\n");
+        std::cout << "Gata pasul 3\n";
+        top_x(cub);//pas4
+        //Serial.print("Gata pasul 4\n");
+        std::cout << "Gata pasul 4\n";
+        creare_fata_galbena(cub);//pasul 5
+        //Serial.print("Gata pasul 5\n");
+        std::cout << "Gata pasul 5\n";
+       pozitionare_colturi(cub);//pasul 6
+        //Serial.print("Gata pasul 6\n");
+        std::cout << "Gata pasul 6\n";
+        aranjare_muchii(cub);//pasul 7
+    }
+    //Serial.print("Cubul este gata\n");
+    std::cout << "Cubul este gata\n";
+    //@delay(3000000);
+ //reglare(stanga , 8);
+ //delay(300000);
+//  mutare(dreapta);
+//  delay(2000);
+//  mutare(spate);
+//  delay(2000);
+//  mutare(stanga);
+//  delay(2000);
+//  mutare(fataa);
+//  delay(2000);
+//  mutare(jos);
+//  delay(2000);
+//  mutare(sus);
+//  delay(2000);
+//  delay(4000);
+
+}
